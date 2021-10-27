@@ -1,16 +1,151 @@
-html,
+@font-face {
+  font-family: "shabnam";
+  src: url(/fonts/Shabnam.ttf);
+  font-display: swap;
+}
+
 body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: "shabnam";
+  overflow-x: hidden;
+  background-color: #f7f7f7;
+  direction: rtl;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+.Toastify__toast-body {
+  font-family: "shabnam";
+  direction: rtl;
 }
 
-* {
-  box-sizing: border-box;
+.MuiToolbar-regular .MuiInputLabel-outlined {
+  background-color: rgb(240, 240, 240);
+}
+
+.MuiPaper-root.MuiDrawer-paper.MuiDrawer-paperAnchorLeft.MuiPaper-elevation16,
+.MuiPaper-root.MuiDrawer-paper.MuiDrawer-paperAnchorRight.MuiPaper-elevation16 {
+  background-color: #f7f7f7 !important;
+}
+
+/*.MuiInputLabel-outlined {
+  transform: translate(-14px, 13px) scale(1) !important;
+}*/
+
+.MuiToolbar-root .MuiSelect-select.MuiSelect-select {
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+}
+
+.MuiInput-underline:after {
+  border-bottom: none !important;
+}
+
+.MuiInput-underline:hover:not(.Mui-disabled):before {
+  border-bottom: none !important;
+}
+
+.MuiToolbar-root .MuiInputLabel-formControl {
+  right: 8px !important;
+}
+
+.MuiInput-underline:before {
+  border-bottom: none !important;
+}
+
+.MuiDialog-paper {
+  margin: 0 !important;
+}
+
+.MuiPaper-root.MuiMenu-paper.MuiPopover-paper {
+  background-color: #fcfcfc;
+}
+
+.color-animate {
+  /*animation-name: color;
+  animation-duration: 2.5s;
+  animation-iteration-count: infinite;*/
+}
+
+.animate__fadeInLeft {
+  animation-name: bounceFadeInLeft;
+  animation-duration: 1.8s;
+}
+
+.new-label {
+  clip-path: polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%);
+  background-color: rgb(218, 31, 61);
+  color: white;
+  padding: 2px 12px 2px 5px;
+  font-size: 10px;
+  margin-right: 5px;
+}
+
+@media screen and (max-width: 1025px) {
+  .mobile-version p {
+    font-size: 0.8rem;
+  }
+}
+
+@keyframes color {
+  0% {
+    background-color: #6bb46b;
+  }
+  50% {
+    background-color: #2a682a;
+  }
+  100% {
+    background-color: #6bb46b;
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(-10%, 1px, 0);
+    transform: translate3d(-10%, 1px, 0);
+  }
+
+  to {
+    opacity: 1;
+    -webkit-transform: translate3d(86px, 1px, 0);
+    transform: translate3d(86px, 1px, 0);
+  }
+}
+
+@keyframes waitFadeInLeft {
+  0% {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 1px, 0);
+    transform: translate3d(0, 1px, 0);
+  }
+
+  15% {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 1px, 0);
+    transform: translate3d(0, 1px, 0);
+  }
+
+  100% {
+    opacity: 1;
+    -webkit-transform: translate3d(86px, 1px, 0);
+    transform: translate3d(86px, 1px, 0);
+  }
+}
+
+@keyframes bounceFadeInLeft {
+  0% {
+    opacity: 0;
+    -webkit-transform: translate3d(80%, 4px, 0);
+    transform: translate3d(80%, 4px, 0);
+  }
+
+  40% {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 4px, 0);
+    transform: translate3d(0, 4px, 0);
+  }
+
+  100% {
+    opacity: 1;
+    -webkit-transform: translate3d(86px, 4px, 0);
+    transform: translate3d(86px, 4px, 0);
+  }
 }
