@@ -1,5 +1,7 @@
 import React from "react";
 import Header from "./Header";
+import BackToTop from "./BackToTop";
+import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import AuthContextProvider from "../src/helpers/AuthContext";
 import CartContextProvider from "../src/helpers/CartContext";
@@ -15,6 +17,7 @@ export default function Layout({ children }) {
             <CartContextProvider>
               <Header />
               {children}
+              <BackToTop />
             </CartContextProvider>
           </ProductContextProvider>
         </FilterContextProvider>

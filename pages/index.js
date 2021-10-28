@@ -153,7 +153,24 @@ export default function Home() {
                   key={index}
                 >
                   <div className={classes.cardInfo}>
-                    <Link href={href} className={classes.link}>
+                    <Link
+                      href={{
+                        pathname: href,
+                        search: searchParams
+                          .map((param) => {
+                            console.log(`firstPageItem[${index}]`);
+                            if (
+                              Object.values(param).some((val) => val !== null)
+                            ) {
+                              return `${Object.keys(param)}=${Object.values(
+                                param
+                              )}`;
+                            }
+                          })
+                          .join("&"),
+                      }}
+                      className={classes.link}
+                    >
                       <a>
                         <Avatar
                           alt="logo"

@@ -1,4 +1,5 @@
 import React from "react";
+import { useRouter } from "next/router";
 import { makeStyles, createTheme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
@@ -118,9 +119,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Categories(props) {
-  const { products, slug } = props;
   const classes = useStyles();
-  const { filter } = React.useContext(FilterContext);
+  const router = useRouter();
+  const { products, slug } = props;
+  const { filter, setFilter } = React.useContext(FilterContext);
   const { initialProducts, filtering, allProducts, filteredProducts } =
     React.useContext(ProductContext);
   const [showMoreLoading, setShowMoreLoading] = React.useState(true);
@@ -387,6 +389,16 @@ export default function Categories(props) {
   }, [slug]);
 
   React.useEffect(() => {
+    const { material, size } = router.query;
+    setFilter({
+      materials: material ? [material] : [],
+      sizes: size ? [Number(size)] : [],
+      style: [],
+      usage: [],
+    });
+  }, [allProducts]);
+
+  React.useEffect(() => {
     setOffset(16);
     handleGoToTop();
     console.log(filter);
@@ -402,7 +414,6 @@ export default function Categories(props) {
 
   React.useEffect(() => {
     getProductSizeGuide(filteredProducts);
-    console.log("fired", filteredProducts);
   }, [filteredProducts]);
 
   const CategoriesComponent = () => {
@@ -472,7 +483,7 @@ export default function Categories(props) {
           className={classes.container}
           spacing={2}
           alignItems="center"
-          justify="center"
+          justifyContent="center"
         >
           <Grid item xs={12} sm={checkSlug().description !== null ? 6 : 12}>
             {imagePath !== null ? (

@@ -22,6 +22,7 @@ import Divider from "@material-ui/core/Divider";
 import TelegramIcon from "@material-ui/icons/Telegram";
 import WhatsAppIcon from "@material-ui/icons/WhatsApp";
 import { CartContext } from "../src/helpers/CartContext";
+import { FilterContext } from "src/helpers/FilterContext";
 import Search from "./Search";
 import pages from "../src/pages";
 
@@ -239,7 +240,7 @@ export default function Header(props) {
   const [auth, setAuth] = React.useState(true);
   const [selectedIndex, setSelectedIndex] = React.useState();
   const [loadCartCount, setLoadCartCount] = React.useState(true);
-  //   const { setFilter } = React.useContext(FilterContext);
+  const { setFilter } = React.useContext(FilterContext);
 
   const [openSearch, setOpenSearch] = React.useState(false);
   const { cartItems, itemCount, removeProduct } = React.useContext(CartContext);
@@ -285,12 +286,12 @@ export default function Header(props) {
   };
 
   const emptyFilter = () => {
-    // setFilter({
-    //   materials: [],
-    //   sizes: [],
-    //   style: [],
-    //   usage: [],
-    // });
+    setFilter({
+      materials: [],
+      sizes: [],
+      style: [],
+      usage: [],
+    });
   };
 
   React.useEffect(() => {
