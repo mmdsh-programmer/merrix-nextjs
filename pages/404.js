@@ -2,6 +2,7 @@ import React from "react";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import Loading from "components/Loading";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -17,13 +18,14 @@ export default function NotFound(props) {
 
   return (
     <React.Fragment>
-      <Container component="main" maxWidth="xs">
+      {/* <Container component="main" maxWidth="xs">
         <div className={classes.paper}>
           <Typography component="h1" variant="h5">
             صفحه مورد نظر یافت نشد!
           </Typography>
         </div>
-      </Container>
+      </Container> */}
+      <Loading />
     </React.Fragment>
   );
 }

@@ -231,7 +231,7 @@ export default function Search(props) {
                               aria-label="increase"
                               onClick={() => {
                                 const product = {
-                                  image: row.images[0].src,
+                                  image: row.images,
                                   title: row.name,
                                   key: index,
                                   id: row.id,

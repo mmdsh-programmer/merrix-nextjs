@@ -7,6 +7,7 @@ import AuthContextProvider from "../src/helpers/AuthContext";
 import CartContextProvider from "../src/helpers/CartContext";
 import FilterContextProvider from "../src/helpers/FilterContext";
 import ProductContextProvider from "../src/helpers/ProductContext";
+import Loading from "./Loading";
 
 export default function Layout({ children }) {
   return (
@@ -15,6 +16,7 @@ export default function Layout({ children }) {
         <FilterContextProvider>
           <ProductContextProvider>
             <CartContextProvider>
+              <Loading loading={false} />
               <Header />
               {children}
               <BackToTop />
