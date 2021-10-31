@@ -103,25 +103,29 @@ export default function Home() {
 
   const firstPageItems = [
     {
-      href: "/categories/211/X BOX | باکس",
+      href: "/categories/211",
+      slug: "X BOX | باکس",
       searchParams: [{ material: "کیت باکس" }, { size: 1 }],
       image: "/kit-box.webp",
       description: "X BOX",
     },
     {
-      href: "/categories/179/X MEMO | دفترچه",
+      href: "/categories/179",
+      slug: "X MEMO | دفترچه",
       searchParams: [{ material: "دفترچه اسکچ بوکلت" }, { size: 2 }],
       image: "/sketch-booklet.webp",
       description: "X MEMO",
     },
     {
-      href: "/categories/171/X BAG | بگ",
+      href: "/categories/171",
+      slug: "X BAG | بگ",
       searchParams: [{ material: "کرافت" }, { size: 2 }],
       image: "/kraft-bag.webp",
       description: "X BAG",
     },
     {
-      href: "/categories/171/X BAG | بگ",
+      href: "/categories/171",
+      slug: "X BAG | بگ",
       searchParams: [{ material: "گلاسه" }, { size: 3 }],
       image: "/fancy-bag.webp",
       description: "X BAG",
@@ -143,7 +147,7 @@ export default function Home() {
         <Container maxWidth="xl" className={classes.mainContainer}>
           <Grid container className={classes.container} spacing={2}>
             {firstPageItems.map(
-              ({ href, searchParams, image, description }, index) => (
+              ({ href, slug, searchParams, image, description }, index) => (
                 <Grid
                   item
                   xs={6}
@@ -155,10 +159,9 @@ export default function Home() {
                   <div className={classes.cardInfo}>
                     <Link
                       href={{
-                        pathname: href,
+                        pathname: `${href}/${encodeURIComponent(slug)}`,
                         search: searchParams
                           .map((param) => {
-                            console.log(`firstPageItem[${index}]`);
                             if (
                               Object.values(param).some((val) => val !== null)
                             ) {

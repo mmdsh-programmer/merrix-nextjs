@@ -323,7 +323,9 @@ export default function Header(props) {
           <List component="nav" className={classes.flexNav}>
             {pages.map((item, index) => (
               <Link
-                href={`/categories/${item.id}/${item.pageName}`}
+                href={`/categories/${item.id}/${encodeURIComponent(
+                  item.pageName
+                )}`}
                 key={index}
               >
                 <a className={classes.navLink}>
@@ -446,7 +448,7 @@ export default function Header(props) {
                 onClick={toggleDrawer(["right"], true)}
               >
                 <Badge
-                  badgeContent={loadCartCount ? loadCartCount : itemCount}
+                  badgeContent={loadCartCount ? 0 : itemCount}
                   max={2000}
                   color="secondary"
                 >

@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "export": "npm run build && next export -o _static"
   },
   "dependencies": {
     "@material-ui/core": "^4.12.3",
@@ -24,7 +25,7 @@
     "react-toastify": "^8.0.3"
   },
   "devDependencies": {
-    "eslint": "8.1.0",
+    "eslint": "^8.1.0",
     "eslint-config-next": "11.1.2"
   }
 }

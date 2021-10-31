@@ -207,7 +207,6 @@ export default function Categories(props) {
   const getProductSizeGuide = (products) => {
     if (products.length > 0 && filter.sizes.length > 0) {
       const { sku } = products[0];
-      console.log("sku", sku);
       const category = Number(sku.substr(1, 2));
       const type = Number(sku.substr(3, 2));
       const size = Number(sku.substr(5, 2));
@@ -338,7 +337,6 @@ export default function Categories(props) {
   };
 
   const filterProducts = (data) => {
-    console.log(filter);
     let filteredMaterials = [];
     let filteredSizes = [];
     let filteredStyle = [];
@@ -376,8 +374,6 @@ export default function Categories(props) {
       filteredUsage
     );
 
-    console.log(count(finalFilter));
-
     filtering({ filtered: count(finalFilter) });
   };
 
@@ -401,7 +397,6 @@ export default function Categories(props) {
   React.useEffect(() => {
     setOffset(16);
     handleGoToTop();
-    console.log(filter);
     if (
       filter.materials.length > 0 ||
       filter.sizes.length > 0 ||

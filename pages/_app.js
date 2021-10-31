@@ -24,11 +24,9 @@ export default function MyApp(props) {
 
   React.useEffect(() => {
     const start = () => {
-      console.log("start");
       setLoading(true);
     };
     const end = () => {
-      console.log("finished");
       setLoading(false);
     };
 

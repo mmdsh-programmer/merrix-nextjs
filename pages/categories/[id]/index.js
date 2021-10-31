@@ -2,7 +2,12 @@ import React from "react";
 import pages from "src/pages";
 
 export default function categories(props) {
-  console.log(props);
+  React.useEffect(() => {
+    const { result } = props;
+    // let currentPage = pages.filter((page) => page.id === result.id);
+    console.log(props);
+  }, []);
+
   return <div></div>;
 }
 

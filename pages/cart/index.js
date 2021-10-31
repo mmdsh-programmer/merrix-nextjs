@@ -1,4 +1,5 @@
 import React from "react";
+import Head from "next/head";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -97,137 +98,149 @@ export default function Cart(props) {
   };
 
   return (
-    <React.Fragment>
-      <Container maxWidth="md">
-        <Typography variant="h5" component="h1" className={classes.title}>
-          ویرایش سفارش
-        </Typography>
-        {cartItems.length > 0 ? (
-          <React.Fragment>
-            <TableContainer component={Paper}>
-              <Table className={classes.table} aria-label="customized table">
-                <TableHead>
-                  <TableRow>
-                    <StyledTableCell align="left">تصویر محصول</StyledTableCell>
-                    <StyledTableCell align="left">محصول</StyledTableCell>
-                    <StyledTableCell align="left"></StyledTableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {cartItems.map((row) => (
-                    <StyledTableRow key={row.id}>
-                      <StyledTableCell component="th" scope="row">
-                        <Badge
-                          anchorOrigin={{
-                            vertical: "top",
-                            horizontal: "left",
-                          }}
-                          badgeContent={row.quantity}
-                          color="secondary"
-                        >
-                          <Avatar
-                            alt={row.title}
-                            src={
-                              typeof row !== "undefined"
-                                ? row?.image[0].src
-                                : null
-                            }
-                            className={classes.large}
-                          />
-                        </Badge>
-                      </StyledTableCell>
+    <>
+      <Head>
+        <title>شرکت مریخ (لوتوس) - ویرایش سفارش</title>
+        <meta
+          name="description"
+          content="شرکت مریخ (لوتوس) - تولید کننده ملزومات هدیه"
+        />
+      </Head>
+
+      <React.Fragment>
+        <Container maxWidth="md">
+          <Typography variant="h5" component="h1" className={classes.title}>
+            ویرایش سفارش
+          </Typography>
+          {cartItems.length > 0 ? (
+            <React.Fragment>
+              <TableContainer component={Paper}>
+                <Table className={classes.table} aria-label="customized table">
+                  <TableHead>
+                    <TableRow>
                       <StyledTableCell align="left">
-                        {row.title}
+                        تصویر محصول
                       </StyledTableCell>
-                      <StyledTableCell align="left">
-                        <ButtonGroup orientation="vertical">
-                          <Button
-                            aria-label="increase"
-                            size="small"
-                            onClick={() => {
-                              increase(row);
+                      <StyledTableCell align="left">محصول</StyledTableCell>
+                      <StyledTableCell align="left"></StyledTableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {cartItems.map((row) => (
+                      <StyledTableRow key={row.id}>
+                        <StyledTableCell component="th" scope="row">
+                          <Badge
+                            anchorOrigin={{
+                              vertical: "top",
+                              horizontal: "left",
                             }}
+                            badgeContent={row.quantity}
+                            color="secondary"
                           >
-                            <AddIcon fontSize="small" />
-                          </Button>
-                          {isInCart(row) && (
+                            <Avatar
+                              alt={row.title}
+                              src={
+                                typeof row !== "undefined"
+                                  ? row?.image[0].src
+                                  : null
+                              }
+                              className={classes.large}
+                            />
+                          </Badge>
+                        </StyledTableCell>
+                        <StyledTableCell align="left">
+                          {row.title}
+                        </StyledTableCell>
+                        <StyledTableCell align="left">
+                          <ButtonGroup orientation="vertical">
                             <Button
-                              aria-label="reduce"
+                              aria-label="increase"
                               size="small"
                               onClick={() => {
-                                selectedCartItem(row.id)[0].quantity === 1
-                                  ? removeProduct(row)
-                                  : decrease(row);
+                                increase(row);
                               }}
                             >
-                              <RemoveIcon fontSize="small" />
+                              <AddIcon fontSize="small" />
                             </Button>
-                          )}
-                          <Button
-                            aria-label="remove"
-                            size="small"
-                            onClick={() => {
-                              removeProduct(row);
-                            }}
-                          >
-                            <DeleteIcon fontSize="small" />
-                          </Button>
-                        </ButtonGroup>
-                      </StyledTableCell>
-                    </StyledTableRow>
-                  ))}
-                </TableBody>
-                <caption>
-                  <form
-                    className={classes.root}
-                    noValidate
-                    onSubmit={handleSubmit(onSubmit)}
-                  >
-                    <TextField
-                      id="coupon"
-                      label="افزودن کد تخفیف"
-                      variant="outlined"
-                      size="small"
-                      className={classes.coupon}
-                      {...register("coupon", {
-                        required: "پر کردن این فیلد اجباری است",
-                      })}
-                      helperText={
-                        errors.coupon ? "کد تخفیف را وارد کنید" : null
-                      }
-                      error={!!errors.coupon}
-                      required
-                    />
-                    <Button
-                      variant="outlined"
-                      type="submit"
-                      className={classes.couponButton}
-                      loading={loading}
+                            {isInCart(row) && (
+                              <Button
+                                aria-label="reduce"
+                                size="small"
+                                onClick={() => {
+                                  selectedCartItem(row.id)[0].quantity === 1
+                                    ? removeProduct(row)
+                                    : decrease(row);
+                                }}
+                              >
+                                <RemoveIcon fontSize="small" />
+                              </Button>
+                            )}
+                            <Button
+                              aria-label="remove"
+                              size="small"
+                              onClick={() => {
+                                removeProduct(row);
+                              }}
+                            >
+                              <DeleteIcon fontSize="small" />
+                            </Button>
+                          </ButtonGroup>
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    ))}
+                  </TableBody>
+                  <caption>
+                    <form
+                      className={classes.root}
+                      noValidate
+                      onSubmit={handleSubmit(onSubmit)}
                     >
-                      اعمال
-                    </Button>
-                  </form>
-                </caption>
-              </Table>
-            </TableContainer>
-            <Grid container spacing={3} className={classes.dFlex}>
-              <Grid item xs={12}>
-                <Button
-                  variant="outlined"
-                  onClick={() => history.push(`/checkout`)}
-                  className={classes.goToCheckout}
-                >
-                  ثبت سفارش
-                </Button>
+                      <TextField
+                        id="coupon"
+                        label="افزودن کد تخفیف"
+                        variant="outlined"
+                        size="small"
+                        className={classes.coupon}
+                        {...register("coupon", {
+                          required: "پر کردن این فیلد اجباری است",
+                        })}
+                        helperText={
+                          errors.coupon ? "کد تخفیف را وارد کنید" : null
+                        }
+                        error={!!errors.coupon}
+                        required
+                      />
+                      <Button
+                        variant="outlined"
+                        type="submit"
+                        className={classes.couponButton}
+                        loading={loading}
+                      >
+                        اعمال
+                      </Button>
+                    </form>
+                  </caption>
+                </Table>
+              </TableContainer>
+              <Grid container spacing={3} className={classes.dFlex}>
+                <Grid item xs={12}>
+                  <Button
+                    variant="outlined"
+                    onClick={() => history.push(`/checkout`)}
+                    className={classes.goToCheckout}
+                  >
+                    ثبت سفارش
+                  </Button>
+                </Grid>
               </Grid>
-            </Grid>
-          </React.Fragment>
-        ) : (
-          <Typography variant="body1" component="p" align="center">
-            سبد سفارشات خالی است
-          </Typography>
-        )}
-      </Container>
-    </React.Fragment>
+            </React.Fragment>
+          ) : (
+            <Typography variant="body1" component="p" align="center">
+              سبد سفارشات خالی است
+            </Typography>
+          )}
+        </Container>
+      </React.Fragment>
+    </>
   );
 }

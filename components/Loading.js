@@ -74,7 +74,6 @@ export default function Loading(props) {
     if (!props.loading) setTimeout(animateOut_2, 200);
   }, [props.Loading]);
 
-  console.log({ overlayRef, overlayLoaderRef });
   return (
     <div className={classes.overlay} ref={overlayRef} style={{ opacity: 1 }}>
       <div className={classes.overlayLoader} ref={overlayLoaderRef}>
