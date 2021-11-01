@@ -1,5 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router";
+import Head from "next/head";
 import { makeStyles, createTheme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
@@ -466,53 +467,62 @@ export default function Categories(props) {
   };
 
   return (
-    <React.Fragment>
-      <Container maxWidth="lg" className={classes.descriptionHolder}>
-        {imagePath !== null && (
-          <Typography variant="h5" component="h1" className={classes.title}>
-            {slug}
-          </Typography>
-        )}
-        <Grid
-          container
-          className={classes.container}
-          spacing={2}
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Grid item xs={12} sm={checkSlug().description !== null ? 6 : 12}>
-            {imagePath !== null ? (
-              <Avatar
-                alt="guide"
-                src={`/${imagePath}`}
-                className={classes.square}
-              />
-            ) : (
-              <Typography variant="h5" component="h1" className={classes.title}>
-                {slug}
-              </Typography>
+    <>
+      <Head>
+        <title>شرکت مریخ (لوتوس) - {slug}</title>
+      </Head>
+      <React.Fragment>
+        <Container maxWidth="lg" className={classes.descriptionHolder}>
+          {imagePath !== null && (
+            <Typography variant="h5" component="h1" className={classes.title}>
+              {slug}
+            </Typography>
+          )}
+          <Grid
+            container
+            className={classes.container}
+            spacing={2}
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Grid item xs={12} sm={checkSlug().description !== null ? 6 : 12}>
+              {imagePath !== null ? (
+                <Avatar
+                  alt="guide"
+                  src={`/${imagePath}`}
+                  className={classes.square}
+                />
+              ) : (
+                <Typography
+                  variant="h5"
+                  component="h1"
+                  className={classes.title}
+                >
+                  {slug}
+                </Typography>
+              )}
+            </Grid>
+            {checkSlug().description !== null && (
+              <Grid item xs={12} md={6}>
+                <Typography
+                  variant="body1"
+                  component="p"
+                  className={classes.description}
+                  align="justify"
+                >
+                  {checkSlug().description}
+                </Typography>
+              </Grid>
             )}
           </Grid>
-          {checkSlug().description !== null && (
-            <Grid item xs={12} md={6}>
-              <Typography
-                variant="body1"
-                component="p"
-                className={classes.description}
-                align="justify"
-              >
-                {checkSlug().description}
-              </Typography>
-            </Grid>
-          )}
-        </Grid>
-      </Container>
+        </Container>
 
-      <Container maxWidth="lg">
-        <Grid container className={classes.container} spacing={2}>
-          <CategoriesComponent />
-        </Grid>
-      </Container>
-    </React.Fragment>
+        <Container maxWidth="lg">
+          <Grid container className={classes.container} spacing={2}>
+            <CategoriesComponent />
+          </Grid>
+        </Container>
+      </React.Fragment>
+    </>
   );
 }

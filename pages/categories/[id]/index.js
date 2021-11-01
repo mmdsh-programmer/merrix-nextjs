@@ -1,15 +1,7 @@
 import React from "react";
 import pages from "src/pages";
 
-export default function categories(props) {
-  React.useEffect(() => {
-    const { result } = props;
-    // let currentPage = pages.filter((page) => page.id === result.id);
-    console.log(props);
-  }, []);
-
-  return <div></div>;
-}
+export default function categories(props) {}
 
 export async function getStaticPaths() {
   const paths = pages.map((page) => ({

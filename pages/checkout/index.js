@@ -1,4 +1,5 @@
 import React from "react";
+import Head from "next/head";
 import { makeStyles, createTheme } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Stepper from "@material-ui/core/Stepper";
@@ -297,236 +298,253 @@ export default function Checkout() {
   };
 
   return (
-    <React.Fragment>
-      <main className={classes.layout}>
-        {cartItems.length > 0 && (
-          <Paper className={classes.paper}>
+    <>
+      <Head>
+        <title>شرکت مریخ (لوتوس) - ثبت سفارش</title>
+      </Head>
+      <React.Fragment>
+        <main className={classes.layout}>
+          {cartItems.length > 0 && (
+            <Paper className={classes.paper}>
+              <Typography component="h1" variant="h4" align="center">
+                ثبت سفارش
+              </Typography>
+              <Stepper activeStep={activeStep} className={classes.stepper}>
+                {steps.map((label) => (
+                  <Step key={label}>
+                    <StepLabel>{label}</StepLabel>
+                  </Step>
+                ))}
+              </Stepper>
+              {outOfStockProducts.length > 0
+                ? outOfStockProducts.map((item) => (
+                    <Alert severity="error" className={classes.alert}>
+                      موجودی انبار محصول {item.title} به تعداد {item.outOfStock}{" "}
+                      بسته کمتر از تعداد انتخاب شده میباشد
+                    </Alert>
+                  ))
+                : null}
+              <React.Fragment>
+                {activeStep === steps.length ? (
+                  <React.Fragment>
+                    <Typography variant="h5" gutterBottom>
+                      Thank you for your order.
+                    </Typography>
+                    <Typography variant="subtitle1">
+                      Your order number is #2001539. We have emailed your order
+                      confirmation, and will send you an update when your order
+                      has shipped.
+                    </Typography>
+                  </React.Fragment>
+                ) : (
+                  <React.Fragment>
+                    <form
+                      onSubmit={handleSubmit(onSubmit)}
+                      noValidate
+                      className={classes.form}
+                    >
+                      <Grid container spacing={3}>
+                        <Grid item xs={12} sm={6}>
+                          <TextField
+                            required
+                            id="firstName"
+                            label="نام"
+                            fullWidth
+                            autoComplete="given-name"
+                            variant="outlined"
+                            {...register("firstName", { required: true })}
+                            helperText={
+                              errors.firstName ? "نام را وارد کنید" : null
+                            }
+                            error={!!errors.firstName}
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                          <TextField
+                            required
+                            id="lastName"
+                            label="نام خانوادگی"
+                            fullWidth
+                            autoComplete="family-name"
+                            variant="outlined"
+                            {...register("lastName", { required: true })}
+                            helperText={
+                              errors.lastName
+                                ? "نام خانوادگی را وارد کنید"
+                                : null
+                            }
+                            error={!!errors.lastName}
+                          />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <TextField
+                            required
+                            id="shopName"
+                            label="نام فروشگاه"
+                            fullWidth
+                            autoComplete="shipping address-line1"
+                            variant="outlined"
+                            defaultValue=""
+                            {...register("shopName", { required: true })}
+                            helperText={
+                              errors.shopName
+                                ? "نام فروشگاه را وارد کنید"
+                                : null
+                            }
+                            error={!!errors.shopName}
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                          <FormControl
+                            variant="outlined"
+                            fullWidth
+                            required
+                            error={!!errors.province}
+                          >
+                            <InputLabel id="province">استان</InputLabel>
+                            <Controller
+                              render={({
+                                field: { onChange, value, name },
+                              }) => (
+                                <Select
+                                  labelId="province-label"
+                                  label="استان"
+                                  onChange={(e) => {
+                                    onChange(e);
+                                    handleProvinceChange(e);
+                                  }}
+                                  value={value ? value : ""}
+                                  name={name}
+                                >
+                                  {provinceImport.map((prov) => (
+                                    <MenuItem value={prov.name} key={prov.id}>
+                                      {prov.name}
+                                    </MenuItem>
+                                  ))}
+                                </Select>
+                              )}
+                              name="province"
+                              control={control}
+                              defaultValue=""
+                              rules={{ required: true }}
+                            />
+                            {errors.province && (
+                              <FormHelperText>
+                                استان نمیتواند خالی باشد
+                              </FormHelperText>
+                            )}
+                          </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                          <FormControl
+                            variant="outlined"
+                            fullWidth
+                            required
+                            error={!!errors.city}
+                          >
+                            <InputLabel id="city">شهر</InputLabel>
+                            <Controller
+                              render={({
+                                field: { onChange, value, name },
+                              }) => (
+                                <Select
+                                  labelId="city-label"
+                                  label="شهر"
+                                  onChange={(e) => {
+                                    onChange(e);
+                                    handleCityChange(e);
+                                  }}
+                                  value={value ? value : ""}
+                                  name={name}
+                                >
+                                  {finalCities.map((cities) => (
+                                    <MenuItem
+                                      value={cities.name}
+                                      key={cities.id}
+                                    >
+                                      {cities.name}
+                                    </MenuItem>
+                                  ))}
+                                </Select>
+                              )}
+                              name="city"
+                              control={control}
+                              defaultValue=""
+                              rules={{ required: true }}
+                            />
+                            {errors.city && (
+                              <FormHelperText>
+                                شهر نمیتواند خالی باشد
+                              </FormHelperText>
+                            )}
+                          </FormControl>
+                        </Grid>
+                        <Grid item xs={12}>
+                          <TextField
+                            required
+                            id="address"
+                            label="آدرس"
+                            fullWidth
+                            autoComplete="given-address"
+                            variant="outlined"
+                            {...register("address", { required: true })}
+                            helperText={
+                              errors.address ? "آدرس را وارد کنید" : null
+                            }
+                            error={!!errors.address}
+                          />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <TextField
+                            required
+                            id="phone"
+                            name="phone"
+                            label="شماره موبایل (اعداد انگلیسی)"
+                            fullWidth
+                            type="tel"
+                            autoComplete="given-phone"
+                            variant="outlined"
+                            value={phone}
+                            {...register("phone", {
+                              required: true,
+                              onChange: (e) => {
+                                checkPhone(e);
+                              },
+                            })}
+                            helperText={
+                              errors.phone
+                                ? "شماره همراه را به درستی وارد کنید"
+                                : null
+                            }
+                            error={!!errors.phone}
+                          />
+                        </Grid>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          className={classes.button}
+                          type="submit"
+                          loading={loading}
+                        >
+                          ثبت سفارش
+                        </Button>
+                      </Grid>
+                    </form>
+                  </React.Fragment>
+                )}
+              </React.Fragment>
+            </Paper>
+          )}
+          {cartItems.length === 0 && (
             <Typography component="h1" variant="h4" align="center">
-              ثبت سفارش
+              سبد شفارشات شما خالی است. لطفا ابتدا سبد سفارشات خود را تکمیل
+              نمایید
             </Typography>
-            <Stepper activeStep={activeStep} className={classes.stepper}>
-              {steps.map((label) => (
-                <Step key={label}>
-                  <StepLabel>{label}</StepLabel>
-                </Step>
-              ))}
-            </Stepper>
-            {outOfStockProducts.length > 0
-              ? outOfStockProducts.map((item) => (
-                  <Alert severity="error" className={classes.alert}>
-                    موجودی انبار محصول {item.title} به تعداد {item.outOfStock}{" "}
-                    بسته کمتر از تعداد انتخاب شده میباشد
-                  </Alert>
-                ))
-              : null}
-            <React.Fragment>
-              {activeStep === steps.length ? (
-                <React.Fragment>
-                  <Typography variant="h5" gutterBottom>
-                    Thank you for your order.
-                  </Typography>
-                  <Typography variant="subtitle1">
-                    Your order number is #2001539. We have emailed your order
-                    confirmation, and will send you an update when your order
-                    has shipped.
-                  </Typography>
-                </React.Fragment>
-              ) : (
-                <React.Fragment>
-                  <form
-                    onSubmit={handleSubmit(onSubmit)}
-                    noValidate
-                    className={classes.form}
-                  >
-                    <Grid container spacing={3}>
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          required
-                          id="firstName"
-                          label="نام"
-                          fullWidth
-                          autoComplete="given-name"
-                          variant="outlined"
-                          {...register("firstName", { required: true })}
-                          helperText={
-                            errors.firstName ? "نام را وارد کنید" : null
-                          }
-                          error={!!errors.firstName}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          required
-                          id="lastName"
-                          label="نام خانوادگی"
-                          fullWidth
-                          autoComplete="family-name"
-                          variant="outlined"
-                          {...register("lastName", { required: true })}
-                          helperText={
-                            errors.lastName ? "نام خانوادگی را وارد کنید" : null
-                          }
-                          error={!!errors.lastName}
-                        />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <TextField
-                          required
-                          id="shopName"
-                          label="نام فروشگاه"
-                          fullWidth
-                          autoComplete="shipping address-line1"
-                          variant="outlined"
-                          defaultValue=""
-                          {...register("shopName", { required: true })}
-                          helperText={
-                            errors.shopName ? "نام فروشگاه را وارد کنید" : null
-                          }
-                          error={!!errors.shopName}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <FormControl
-                          variant="outlined"
-                          fullWidth
-                          required
-                          error={!!errors.province}
-                        >
-                          <InputLabel id="province">استان</InputLabel>
-                          <Controller
-                            render={({ field: { onChange, value, name } }) => (
-                              <Select
-                                labelId="province-label"
-                                label="استان"
-                                onChange={(e) => {
-                                  onChange(e);
-                                  handleProvinceChange(e);
-                                }}
-                                value={value ? value : ""}
-                                name={name}
-                              >
-                                {provinceImport.map((prov) => (
-                                  <MenuItem value={prov.name} key={prov.id}>
-                                    {prov.name}
-                                  </MenuItem>
-                                ))}
-                              </Select>
-                            )}
-                            name="province"
-                            control={control}
-                            defaultValue=""
-                            rules={{ required: true }}
-                          />
-                          {errors.province && (
-                            <FormHelperText>
-                              استان نمیتواند خالی باشد
-                            </FormHelperText>
-                          )}
-                        </FormControl>
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <FormControl
-                          variant="outlined"
-                          fullWidth
-                          required
-                          error={!!errors.city}
-                        >
-                          <InputLabel id="city">شهر</InputLabel>
-                          <Controller
-                            render={({ field: { onChange, value, name } }) => (
-                              <Select
-                                labelId="city-label"
-                                label="شهر"
-                                onChange={(e) => {
-                                  onChange(e);
-                                  handleCityChange(e);
-                                }}
-                                value={value ? value : ""}
-                                name={name}
-                              >
-                                {finalCities.map((cities) => (
-                                  <MenuItem value={cities.name} key={cities.id}>
-                                    {cities.name}
-                                  </MenuItem>
-                                ))}
-                              </Select>
-                            )}
-                            name="city"
-                            control={control}
-                            defaultValue=""
-                            rules={{ required: true }}
-                          />
-                          {errors.city && (
-                            <FormHelperText>
-                              شهر نمیتواند خالی باشد
-                            </FormHelperText>
-                          )}
-                        </FormControl>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <TextField
-                          required
-                          id="address"
-                          label="آدرس"
-                          fullWidth
-                          autoComplete="given-address"
-                          variant="outlined"
-                          {...register("address", { required: true })}
-                          helperText={
-                            errors.address ? "آدرس را وارد کنید" : null
-                          }
-                          error={!!errors.address}
-                        />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <TextField
-                          required
-                          id="phone"
-                          name="phone"
-                          label="شماره موبایل (اعداد انگلیسی)"
-                          fullWidth
-                          type="tel"
-                          autoComplete="given-phone"
-                          variant="outlined"
-                          value={phone}
-                          {...register("phone", {
-                            required: true,
-                            onChange: (e) => {
-                              checkPhone(e);
-                            },
-                          })}
-                          helperText={
-                            errors.phone
-                              ? "شماره همراه را به درستی وارد کنید"
-                              : null
-                          }
-                          error={!!errors.phone}
-                        />
-                      </Grid>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        className={classes.button}
-                        type="submit"
-                        loading={loading}
-                      >
-                        ثبت سفارش
-                      </Button>
-                    </Grid>
-                  </form>
-                </React.Fragment>
-              )}
-            </React.Fragment>
-          </Paper>
-        )}
-        {cartItems.length === 0 && (
-          <Typography component="h1" variant="h4" align="center">
-            سبد شفارشات شما خالی است. لطفا ابتدا سبد سفارشات خود را تکمیل نمایید
-          </Typography>
-        )}
+          )}
 
-        <AlertDialog />
-      </main>
-    </React.Fragment>
+          <AlertDialog />
+        </main>
+      </React.Fragment>
+    </>
   );
 }

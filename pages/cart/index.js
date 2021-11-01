@@ -101,10 +101,6 @@ export default function Cart(props) {
     <>
       <Head>
         <title>شرکت مریخ (لوتوس) - ویرایش سفارش</title>
-        <meta
-          name="description"
-          content="شرکت مریخ (لوتوس) - تولید کننده ملزومات هدیه"
-        />
       </Head>
 
       <React.Fragment>

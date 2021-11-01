@@ -133,72 +133,61 @@ export default function Home() {
   ];
 
   return (
-    <>
-      <Head>
-        <title>شرکت مریخ (لوتوس)</title>
-        <meta
-          name="description"
-          content="شرکت مریخ (لوتوس) - تولید کننده ملزومات هدیه"
-        />
-        <link rel="icon" href="/favicon.png" />
-      </Head>
-
-      <React.Fragment>
-        <Container maxWidth="xl" className={classes.mainContainer}>
-          <Grid container className={classes.container} spacing={2}>
-            {firstPageItems.map(
-              ({ href, slug, searchParams, image, description }, index) => (
-                <Grid
-                  item
-                  xs={6}
-                  sm={6}
-                  md={4}
-                  className={classes.dFlex}
-                  key={index}
-                >
-                  <div className={classes.cardInfo}>
-                    <Link
-                      href={{
-                        pathname: `${href}/${encodeURIComponent(slug)}`,
-                        search: searchParams
-                          .map((param) => {
-                            if (
-                              Object.values(param).some((val) => val !== null)
-                            ) {
-                              return `${Object.keys(param)}=${Object.values(
-                                param
-                              )}`;
-                            }
-                          })
-                          .join("&"),
-                      }}
-                      className={classes.link}
+    <React.Fragment>
+      <Container maxWidth="xl" className={classes.mainContainer}>
+        <Grid container className={classes.container} spacing={2}>
+          {firstPageItems.map(
+            ({ href, slug, searchParams, image, description }, index) => (
+              <Grid
+                item
+                xs={6}
+                sm={6}
+                md={4}
+                className={classes.dFlex}
+                key={index}
+              >
+                <div className={classes.cardInfo}>
+                  <Link
+                    href={{
+                      pathname: `${href}/${encodeURIComponent(slug)}`,
+                      search: searchParams
+                        .map((param) => {
+                          if (
+                            Object.values(param).some((val) => val !== null)
+                          ) {
+                            return `${Object.keys(param)}=${Object.values(
+                              param
+                            )}`;
+                          }
+                        })
+                        .join("&"),
+                    }}
+                    className={classes.link}
+                  >
+                    <a>
+                      <Avatar
+                        alt="logo"
+                        src={image}
+                        className={classes.square}
+                      />
+                    </a>
+                  </Link>
+                  <div className={classes.hoverInfo}>
+                    <Typography
+                      variant="h5"
+                      component="h5"
+                      className={classes.title}
                     >
-                      <a>
-                        <Avatar
-                          alt="logo"
-                          src={image}
-                          className={classes.square}
-                        />
-                      </a>
-                    </Link>
-                    <div className={classes.hoverInfo}>
-                      <Typography
-                        variant="h5"
-                        component="h5"
-                        className={classes.title}
-                      >
-                        {description}
-                      </Typography>
-                    </div>
+                      {description}
+                    </Typography>
                   </div>
-                </Grid>
-              )
-            )}
-          </Grid>
-          <div className={classes.gutterBottom}></div>
-        </Container>
-      </React.Fragment>
-    </>
+                </div>
+              </Grid>
+            )
+          )}
+        </Grid>
+        <div className={classes.gutterBottom}></div>
+      </Container>
+    </React.Fragment>
   );
 }

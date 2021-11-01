@@ -52,6 +52,7 @@ export default function MyApp(props) {
           name="description"
           content="شرکت مریخ (لوتوس) - تولید کننده ملزومات هدیه"
         />
+        <link rel="icon" href="/favicon.png" />
       </Head>
       <ThemeProvider theme={theme}>
         <RTL>
