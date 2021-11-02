@@ -282,7 +282,7 @@ export default function Header(props) {
   };
 
   const splitTitle = (title) => {
-    return title.split("|");
+    return title.split("-");
   };
 
   const emptyFilter = () => {

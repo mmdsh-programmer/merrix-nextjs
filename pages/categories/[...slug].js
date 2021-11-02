@@ -33,7 +33,7 @@ export async function getStaticProps({ params }) {
     `/wc/v3/products?category=${slug[0]}&orderby=date&stock_status=instock&status=publish&per_page=1000`
   );
   return {
-    props: { products: products.data, slug: slug[1] },
+    props: { products: products.data, slug: slug[1].replace("-", " | ") },
   };
 }
 
