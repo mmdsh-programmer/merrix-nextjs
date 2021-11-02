@@ -2,6 +2,7 @@
   "name": "merrix-nextjs",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://xohal.com/test",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
