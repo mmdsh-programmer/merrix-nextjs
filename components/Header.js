@@ -616,7 +616,9 @@ export default function Header(props) {
                         handleDrawerClose();
                       }}
                     >
-                      <ListItemText primary={item.pageName} />
+                      <ListItemText
+                        primary={item.pageName.replace("-", " | ")}
+                      />
                     </ListItem>
                   </a>
                 </Link>
