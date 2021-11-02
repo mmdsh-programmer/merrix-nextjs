@@ -17,7 +17,7 @@ import pages from "src/pages";
 
 export async function getStaticPaths() {
   const paths = pages.map((page) => ({
-    params: { id: page.id.toString(), slug: page.pageName },
+    params: { slug: [page.id.toString(), page.pageName] },
   }));
 
   return {
@@ -27,13 +27,13 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const { id, slug } = params;
-  const result = pages.find((item) => item.id === Number(id));
+  const { slug } = params;
+  const result = pages.find((item) => item.id === Number(slug[0]));
   const products = await product.read(
-    `/wc/v3/products?category=${id}&orderby=date&stock_status=instock&status=publish&per_page=1000`
+    `/wc/v3/products?category=${slug[0]}&orderby=date&stock_status=instock&status=publish&per_page=1000`
   );
   return {
-    props: { products: products.data, slug: slug },
+    props: { products: products.data, slug: slug[1].replace("-", " | ") },
   };
 }
 

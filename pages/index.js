@@ -104,28 +104,28 @@ export default function Home() {
   const firstPageItems = [
     {
       href: "/categories/211",
-      slug: "X BOX | باکس",
+      slug: "X BOX-باکس",
       searchParams: [{ material: "کیت باکس" }, { size: 1 }],
       image: "/kit-box.webp",
       description: "X BOX",
     },
     {
       href: "/categories/179",
-      slug: "X MEMO | دفترچه",
+      slug: "X MEMO-دفترچه",
       searchParams: [{ material: "دفترچه اسکچ بوکلت" }, { size: 2 }],
       image: "/sketch-booklet.webp",
       description: "X MEMO",
     },
     {
       href: "/categories/171",
-      slug: "X BAG | بگ",
+      slug: "X BAG-بگ",
       searchParams: [{ material: "کرافت" }, { size: 2 }],
       image: "/kraft-bag.webp",
       description: "X BAG",
     },
     {
       href: "/categories/171",
-      slug: "X BAG | بگ",
+      slug: "X BAG-بگ",
       searchParams: [{ material: "گلاسه" }, { size: 3 }],
       image: "/fancy-bag.webp",
       description: "X BAG",
