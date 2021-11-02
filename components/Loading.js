@@ -25,6 +25,9 @@ const useStyles = makeStyles((theme) => ({
   },
   loadingText: {
     color: "#fff",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: 35,
+    },
   },
 }));
 
