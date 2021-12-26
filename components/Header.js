@@ -12,8 +12,6 @@ import LocalMallOutlinedIcon from "@material-ui/icons/LocalMallOutlined";
 import MenuIcon from "@material-ui/icons/Menu";
 import Drawer from "@material-ui/core/Drawer";
 import Avatar from "@material-ui/core/Avatar";
-import DeleteIcon from "@material-ui/icons/Delete";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import { Badge } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
@@ -21,6 +19,8 @@ import SearchIcon from "@material-ui/icons/Search";
 import Divider from "@material-ui/core/Divider";
 import TelegramIcon from "@material-ui/icons/Telegram";
 import WhatsAppIcon from "@material-ui/icons/WhatsApp";
+import AddIcon from "@material-ui/icons/Add";
+import RemoveIcon from "@material-ui/icons/Remove";
 import { CartContext } from "../src/helpers/CartContext";
 import { FilterContext } from "src/helpers/FilterContext";
 import Search from "./Search";
@@ -230,6 +230,16 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: "none",
     color: "inherit",
   },
+  cartDrawerButtonHolder: {
+    display: "flex",
+    flexDirection: "column",
+    minHeight: 60,
+    justifyContent: "space-between",
+  },
+  cartDrawerActions: {
+    border: `1px solid rgb(49, 49, 49)`,
+    padding: 0,
+  },
 }));
 
 export default function Header(props) {
@@ -243,7 +253,8 @@ export default function Header(props) {
   const { setFilter } = React.useContext(FilterContext);
 
   const [openSearch, setOpenSearch] = React.useState(false);
-  const { cartItems, itemCount, removeProduct } = React.useContext(CartContext);
+  const { cartItems, itemCount, removeProduct, increase, decrease } =
+    React.useContext(CartContext);
 
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
@@ -292,6 +303,10 @@ export default function Header(props) {
       style: [],
       usage: [],
     });
+  };
+
+  const selectedCartItem = (id) => {
+    return cartItems.filter((e) => e.id === id);
   };
 
   React.useEffect(() => {
@@ -470,50 +485,66 @@ export default function Header(props) {
           <List className={classes.list}>
             {cartItems.length > 0 ? (
               cartItems.map((value, index) => (
-                <ListItem button key={value.id}>
-                  <ListItemAvatar>
-                    <Badge
-                      badgeContent={value.quantity}
-                      max={2000}
-                      color="secondary"
-                      anchorOrigin={{
-                        vertical: "top",
-                        horizontal: "left",
-                      }}
-                    >
-                      <Avatar
-                        alt={value.title}
-                        src={
-                          typeof value.image !== undefined &&
-                          value?.image[0].src
-                        }
-                        className={classes.avatar}
-                      />
-                    </Badge>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={
-                      <Typography
-                        component="p"
-                        variant="body1"
-                        color="textPrimary"
+                <React.Fragment key={value.id}>
+                  <ListItem>
+                    <ListItemAvatar>
+                      <Badge
+                        badgeContent={value.quantity}
+                        max={2000}
+                        color="secondary"
+                        anchorOrigin={{
+                          vertical: "top",
+                          horizontal: "left",
+                        }}
                       >
-                        {value.title}
-                      </Typography>
-                    }
-                  />
-                  <ListItemSecondaryAction>
-                    <IconButton
-                      edge="end"
-                      aria-label="delete"
-                      onClick={() => {
-                        removeProduct(value);
-                      }}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
+                        <Avatar
+                          alt={value.title}
+                          src={
+                            typeof value.image !== undefined &&
+                            value?.image[0].src
+                          }
+                          className={classes.avatar}
+                        />
+                      </Badge>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={
+                        <Typography
+                          component="p"
+                          variant="body1"
+                          color="textPrimary"
+                        >
+                          {value.title}
+                        </Typography>
+                      }
+                    />
+                    <div className={classes.cartDrawerButtonHolder}>
+                      <IconButton
+                        size="small"
+                        aria-label="increase"
+                        className={classes.cartDrawerActions}
+                        onClick={() => {
+                          increase(value);
+                        }}
+                      >
+                        <AddIcon />
+                      </IconButton>
+                      <IconButton
+                        size="small"
+                        aria-label="decrease"
+                        className={classes.cartDrawerActions}
+                        onClick={() => {
+                          selectedCartItem(value.id)[0].quantity === 1
+                            ? removeProduct(value)
+                            : decrease(value);
+                        }}
+                      >
+                        <RemoveIcon />
+                      </IconButton>
+                    </div>
+                  </ListItem>
+                  {index + 1 < cartItems.length && <Divider component="li" />}
+                </React.Fragment>
               ))
             ) : (
               <Typography
