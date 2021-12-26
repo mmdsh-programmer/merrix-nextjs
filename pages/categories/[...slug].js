@@ -171,7 +171,7 @@ export default function Categories(props) {
     },
     tissueBox: {
       description: null,
-      pieces: 5,
+      pieces: 4,
     },
   };
 
@@ -208,6 +208,7 @@ export default function Categories(props) {
   const getProductSizeGuide = (products) => {
     if (products.length > 0 && filter.sizes.length > 0) {
       const { sku } = products[0];
+      console.log("sku", sku);
       const category = Number(sku.substr(1, 2));
       const type = Number(sku.substr(3, 2));
       const size = Number(sku.substr(5, 2));
@@ -218,7 +219,7 @@ export default function Categories(props) {
           setImagePath(null);
         }
       } else if (category === 2) {
-        if (type === 10) {
+        if (type === 10 && getSkuRep(sku) !== 3) {
           setImagePath(`glossy-xbag/${size}.jpg`);
         } else if (type === 11) {
           setImagePath(`kraft-xbag/${size}.jpg`);
