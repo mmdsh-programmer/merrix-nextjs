@@ -21,7 +21,7 @@ import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import Radio from "@material-ui/core/Radio";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import _without from "lodash/without";
-import { productsFilterTemp } from "src/services/filters/productsFilter";
+import productsFilters from "src/services/filters/productsFilter";
 
 const specialBreakpoint = createTheme({
   breakpoints: {
@@ -204,7 +204,7 @@ function FilterComponent(props) {
   );
 
   const [{ xwrap }, { xbox }, { xbag }, { xmemo }, { tissue }] =
-    productsFilterTemp;
+    productsFilters;
   const { slug } = props;
 
   const handleSelectedItem = (selectedItem) => {
