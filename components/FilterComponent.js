@@ -23,7 +23,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import _without from "lodash/without";
 import { productsFilterTemp } from "src/services/filters/productsFilter";
 
-const specialBreakpoint = createMuiTheme({
+const specialBreakpoint = createTheme({
   breakpoints: {
     values: {
       xs: 0,
