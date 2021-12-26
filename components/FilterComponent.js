@@ -1,13 +1,13 @@
-import React from "react";
+import React, { memo, useEffect } from "react";
 import { makeStyles, createTheme } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
+import { FilterContext } from "src/helpers/FilterContext";
 import Toolbar from "@material-ui/core/Toolbar";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Select from "@material-ui/core/Select";
-import Checkbox from "@material-ui/core/Checkbox";
 import Chip from "@material-ui/core/Chip";
 import Grid from "@material-ui/core/Grid";
 import TuneIcon from "@material-ui/icons/Tune";
@@ -21,9 +21,9 @@ import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import Radio from "@material-ui/core/Radio";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import _without from "lodash/without";
-import { FilterContext } from "src/helpers/FilterContext";
+import { productsFilterTemp } from "src/services/filters/productsFilter";
 
-const specialBreakpoint = createTheme({
+const specialBreakpoint = createMuiTheme({
   breakpoints: {
     values: {
       xs: 0,
@@ -191,207 +191,95 @@ const MenuProps = {
   getContentAnchorEl: null,
 };
 
-export default function FilterComponent(props) {
+function FilterComponent(props) {
   const classes = useStyles();
   const [openMobileFilter, setOpenMobileFilter] = React.useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null);
   const { setFilter, filter } = React.useContext(FilterContext);
   const defaultFilterText = "همه";
   const [material, setMaterial] = React.useState(
-    typeof filter !== "undefined"
-      ? filter.materials.length === 0
-        ? [defaultFilterText]
-        : filter.materials
-      : [defaultFilterText]
+    filter.materials.length ? [...filter.materials] : [defaultFilterText]
   );
   const [size, setSize] = React.useState(
-    typeof filter !== "undefined"
-      ? filter.sizes.length === 0
-        ? [defaultFilterText]
-        : filter.sizes
-      : [defaultFilterText]
+    filter.sizes.length ? [...filter.sizes] : [defaultFilterText]
   );
-  const [styleFilter, setStyleFilter] = React.useState(
-    typeof filter !== "undefined"
-      ? filter.style.length === 0
-        ? [defaultFilterText]
-        : filter.style
-      : [defaultFilterText]
-  );
-  const [usage, setUsage] = React.useState(
-    typeof filter !== "undefined"
-      ? filter.usage.length === 0
-        ? [defaultFilterText]
-        : filter.usage
-      : [defaultFilterText]
-  );
-  const { slug } = props;
-  const filterOptions = {
-    xWrap: {
-      hasSize: false,
-      hasMaterial: true,
-      hasStyle: false,
-      hasUsage: false,
-      material: [
-        "گلاسه",
-        "کرافت",
-        "لینن",
-        "رنگی",
-        "یووی",
-        "شاینی",
-        "مخمل",
-        "اوپال",
-      ],
-      style: ["عاشقانه", "ایرانی", "تم تولد"],
-      usage: ["کتاب", "ماگ"],
-    },
-    xBox: {
-      hasSize: true,
-      hasMaterial: true,
-      hasStyle: false,
-      hasUsage: false,
-      material: ["متال باکس", "کیت باکس"],
-      style: ["عاشقانه", "ایرانی", "تم تولد"],
-      usage: ["کتاب", "ماگ"],
-    },
-    xBag: {
-      hasSize: true,
-      hasMaterial: true,
-      hasStyle: false,
-      hasUsage: false,
-      material: ["گلاسه", "کرافت", "ویلو"],
-      style: ["عاشقانه", "ایرانی", "تم تولد"],
-      usage: ["کتاب", "ماگ"],
-    },
-    xMemo: {
-      hasSize: true,
-      hasMaterial: true,
-      hasStyle: false,
-      hasUsage: false,
-      material: [
-        "دفترچه دیلی بوکلت (بولت ژورنال)",
-        "دفترچه وولن بوکلت",
-        "دفترچه اسکچ بوکلت",
-      ],
-      style: ["عاشقانه", "ایرانی", "تم تولد"],
-      usage: ["کتاب", "ماگ"],
-    },
-    tissueBox: {
-      hasSize: false,
-      hasMaterial: false,
-      hasStyle: false,
-      hasUsage: false,
-      material: [],
-      style: ["عاشقانه", "ایرانی", "تم تولد"],
-      usage: ["کتاب", "ماگ"],
-    },
-  };
 
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
-  let materials = material;
+  const [{ xwrap }, { xbox }, { xbag }, { xmemo }, { tissue }] =
+    productsFilterTemp;
+  const { slug } = props;
+
+  const handleSelectedItem = (selectedItem) => {
+    const [{ sizes } = {}] = [
+      ...checkSlug().filter(({ material }) => material === selectedItem),
+    ];
+    return sizes || [...Array.from({ length: 18 }, (_, i) => i + 1)];
+  };
 
   const checkSlug = () => {
     switch (slug) {
       case "X WRAP | کادوپیچ":
-        return filterOptions.xWrap;
+        return xwrap;
       case "X BOX | باکس":
-        return filterOptions.xBox;
+        return xbox;
       case "X BAG | بگ":
-        return filterOptions.xBag;
+        return xbag;
       case "TISSUE BOX | باکس دستمال کاغذی":
-        return filterOptions.tissueBox;
+        return tissue;
+      case "X MEMO | دفترچه":
+        return xmemo;
       default:
-        return filterOptions.xMemo;
+        return null;
     }
   };
 
-  const removeUndefined = (array) => {
-    return array.filter((item) => {
-      return typeof item !== "undefined";
-    });
+  const hasSize = () => {
+    switch (slug) {
+      case "X BOX | باکس":
+      case "X BAG | بگ":
+      case "TISSUE BOX | باکس دستمال کاغذی":
+      case "X MEMO | دفترچه":
+        return true;
+      case "X WRAP | کادوپیچ":
+      default:
+        return false;
+    }
   };
+
+  const [selectedSizes, setSelectedSizes] = React.useState(
+    filter?.materials?.length
+      ? [...handleSelectedItem(filter.materials)]
+      : [...Array.from({ length: 18 }, (_, i) => i + 1)]
+  );
 
   const handleSingleSelectChange = (select, event) => {
-    const value = event.target.value;
+    const {
+      value: [, selectedItem],
+    } = { ...event.target };
+
+    console.log(selectedItem);
+
     switch (select) {
-      case "material":
-        setMaterial(
-          value.length > 1
-            ? typeof value[value.length - 1] !== "undefined"
-              ? [value[value.length - 1]]
-              : [defaultFilterText]
-            : [defaultFilterText]
-        );
+      case "material": {
+        setSelectedSizes(handleSelectedItem(selectedItem));
+        setMaterial([selectedItem || defaultFilterText]);
+        setSize([defaultFilterText]);
         break;
-      case "size":
-        setSize(
-          value.length > 1
-            ? typeof value[value.length - 1] !== "undefined"
-              ? [value[value.length - 1]]
-              : [defaultFilterText]
-            : [defaultFilterText]
-        );
+      }
+
+      case "size": {
+        setSize([selectedItem || defaultFilterText]);
+        break;
+      }
+
+      default:
         break;
     }
-
-    //setMaterial(data)
-  };
-
-  const handleMaterialChange = (event) => {
-    let val = event.target.value;
-    if (val.includes(defaultFilterText)) {
-      val.splice(val.indexOf(defaultFilterText), 1);
-    }
-    setMaterial(
-      val.length === 0
-        ? [defaultFilterText]
-        : removeUndefined(event.target.value)
-    );
-  };
-
-  const handleSizeChange = (event) => {
-    let val = event.target.value;
-    if (val.includes(defaultFilterText)) {
-      val.splice(val.indexOf(defaultFilterText), 1);
-    }
-    setSize(
-      val.length === 0
-        ? [defaultFilterText]
-        : removeUndefined(event.target.value)
-    );
-  };
-
-  const handleStyleChange = (event) => {
-    let val = event.target.value;
-    if (val.includes(defaultFilterText)) {
-      val.splice(val.indexOf(defaultFilterText), 1);
-    }
-    setStyleFilter(
-      val.length === 0
-        ? [defaultFilterText]
-        : removeUndefined(event.target.value)
-    );
-  };
-
-  const handleUsageChange = (event) => {
-    let val = event.target.value;
-    if (val.includes(defaultFilterText)) {
-      val.splice(val.indexOf(defaultFilterText), 1);
-    }
-    setUsage(
-      val.length === 0
-        ? [defaultFilterText]
-        : removeUndefined(event.target.value)
-    );
   };
 
   const handleSubmit = () => {
     setFilter({
+      ...filter,
       materials: material.includes(defaultFilterText) ? [] : material,
       sizes: size.includes(defaultFilterText) ? [] : size,
-      style: styleFilter.includes(defaultFilterText) ? [] : styleFilter,
-      usage: usage.includes(defaultFilterText) ? [] : usage,
     });
   };
 
@@ -406,42 +294,40 @@ export default function FilterComponent(props) {
   const handleChipDelete = (e, value, destination) => {
     e.preventDefault();
     switch (destination) {
-      case "material":
+      case "material": {
         setFilter({
+          ...filter,
           materials: material.length === 1 ? [] : _without(material, value),
-          sizes: size.includes(defaultFilterText) ? [] : size,
-          style: styleFilter.includes(defaultFilterText) ? [] : styleFilter,
-          usage: usage.includes(defaultFilterText) ? [] : usage,
         });
         break;
-      case "size":
+      }
+      case "size": {
         setFilter({
-          materials: material.includes(defaultFilterText) ? [] : material,
+          ...filter,
           sizes: size.length === 1 ? [] : _without(size, value),
-          style: styleFilter.includes(defaultFilterText) ? [] : styleFilter,
-          usage: usage.includes(defaultFilterText) ? [] : usage,
         });
         break;
-      case "style":
-        setStyleFilter((current) =>
-          current.length === 1 ? [defaultFilterText] : _without(current, value)
-        );
-        break;
-      case "usage":
-        setUsage((current) =>
-          current.length === 1 ? [defaultFilterText] : _without(current, value)
-        );
+      }
+      default:
         break;
     }
   };
 
+  useEffect(() => {
+    const [initialSelectedSizes] =
+      checkSlug().filter((item) => item.material === filter.materials[0]) || [];
+    setSelectedSizes(
+      initialSelectedSizes?.sizes || [
+        ...Array.from({ length: 18 }, (_, i) => i + 1),
+      ]
+    );
+  }, []);
+
   return (
     <React.Fragment>
-      {checkSlug().hasMaterial ||
-      checkSlug().hasSize ||
-      checkSlug().hasStyle ||
-      checkSlug().hasUsage ? (
+      {checkSlug().length > 0 ? (
         <Toolbar className={classes.filterBar}>
+          {/* ----------------mobile filters-------------------- */}
           <Button
             variant="outlined"
             color="default"
@@ -473,7 +359,7 @@ export default function FilterComponent(props) {
             </AppBar>
 
             <Toolbar className={classes.mobileFilterToolbar}>
-              {checkSlug().hasMaterial && (
+              {checkSlug().length > 0 && (
                 <FormControl className={classes.mobileFormControl} fullWidth>
                   <InputLabel id="demo-mutiple-checkbox-label">نوع</InputLabel>
                   <Select
@@ -518,7 +404,7 @@ export default function FilterComponent(props) {
                     )}
                     MenuProps={MenuProps}
                   >
-                    {checkSlug().material.map((name, index) => (
+                    {checkSlug().map(({ material: name }, index) => (
                       <MenuItem key={index} value={name}>
                         <FormControlLabel
                           control={<Radio />}
@@ -532,7 +418,7 @@ export default function FilterComponent(props) {
                   </Select>
                 </FormControl>
               )}
-              {checkSlug().hasSize && (
+              {hasSize() && selectedSizes.length > 0 && (
                 <FormControl className={classes.mobileFormControl} fullWidth>
                   <InputLabel id="size-mutiple-checkbox-label">سایز</InputLabel>
                   <Select
@@ -581,125 +467,16 @@ export default function FilterComponent(props) {
                     )}
                     MenuProps={MenuProps}
                   >
-                    {[...Array(18).keys()].map((name, index) => (
-                      <MenuItem key={index} value={name + 1}>
-                        <FormControlLabel
-                          control={<Radio />}
-                          checked={size.indexOf(name + 1) > -1}
-                        />
-                        <ListItemText primary={`سایز ${name + 1}`} />
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              )}
-              {checkSlug().hasStyle && (
-                <FormControl className={classes.mobileFormControl} fullWidth>
-                  <InputLabel id="style-mutiple-checkbox-label">طرح</InputLabel>
-                  <Select
-                    labelId="style-mutiple-checkbox-label"
-                    id="style-mutiple-checkbox"
-                    multiple
-                    value={styleFilter}
-                    onChange={handleStyleChange}
-                    renderValue={(selected) => (
-                      <div className={classes.chips}>
-                        {selected.map(
-                          (value, index) =>
-                            typeof value !== "undefined" && (
-                              <Chip
-                                key={index}
-                                label={value}
-                                className={classes.chip}
-                                clickable
-                                deleteIcon={
-                                  value !== defaultFilterText ? (
-                                    <CancelIcon
-                                      onMouseDown={(event) =>
-                                        event.stopPropagation()
-                                      }
-                                    />
-                                  ) : (
-                                    <CheckCircleIcon
-                                      onMouseDown={(event) => {
-                                        event.stopPropagation();
-                                        handleSubmit();
-                                      }}
-                                    />
-                                  )
-                                }
-                                onDelete={(e) =>
-                                  handleChipDelete(e, value, "style")
-                                }
-                              />
-                            )
-                        )}
-                      </div>
-                    )}
-                    MenuProps={MenuProps}
-                  >
-                    {checkSlug().style.map((name, index) => (
-                      <MenuItem key={index} value={name}>
-                        <Checkbox checked={styleFilter.indexOf(name) > -1} />
-                        <ListItemText primary={name} />
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              )}
-              {checkSlug().hasUsage && (
-                <FormControl className={classes.mobileFormControl} fullWidth>
-                  <InputLabel id="usage-mutiple-checkbox-label">
-                    کاربرد
-                  </InputLabel>
-                  <Select
-                    labelId="usage-mutiple-checkbox-label"
-                    id="usage-mutiple-checkbox"
-                    multiple
-                    value={usage}
-                    onChange={handleUsageChange}
-                    renderValue={(selected) => (
-                      <div className={classes.chips}>
-                        {selected.map(
-                          (value, index) =>
-                            typeof value !== "undefined" && (
-                              <Chip
-                                key={index}
-                                label={value}
-                                className={classes.chip}
-                                clickable
-                                deleteIcon={
-                                  value !== defaultFilterText ? (
-                                    <CancelIcon
-                                      onMouseDown={(event) =>
-                                        event.stopPropagation()
-                                      }
-                                    />
-                                  ) : (
-                                    <CheckCircleIcon
-                                      onMouseDown={(event) => {
-                                        event.stopPropagation();
-                                        handleSubmit();
-                                      }}
-                                    />
-                                  )
-                                }
-                                onDelete={(e) =>
-                                  handleChipDelete(e, value, "usage")
-                                }
-                              />
-                            )
-                        )}
-                      </div>
-                    )}
-                    MenuProps={MenuProps}
-                  >
-                    {checkSlug().usage.map((name, index) => (
-                      <MenuItem key={index} value={name}>
-                        <Checkbox checked={usage.indexOf(name) > -1} />
-                        <ListItemText primary={name} />
-                      </MenuItem>
-                    ))}
+                    {!selectedSizes.includes(defaultFilterText) &&
+                      selectedSizes.map((name, index) => (
+                        <MenuItem key={index} value={name}>
+                          <FormControlLabel
+                            control={<Radio />}
+                            checked={size.indexOf(name) > -1}
+                          />
+                          <ListItemText primary={`سایز ${name}`} />
+                        </MenuItem>
+                      ))}
                   </Select>
                 </FormControl>
               )}
@@ -722,8 +499,10 @@ export default function FilterComponent(props) {
               </Button>
             </div>
           </Dialog>
+
+          {/* ----------------desktop filters-------------------- */}
           <Grid container spacing={2} className={classes.filterGridContainer}>
-            {checkSlug().hasMaterial && (
+            {checkSlug().length > 0 && (
               <Grid item xs={12} sm={4} md={3} className={classes.dFlex}>
                 <FormControl className={classes.formControl}>
                   <InputLabel id="demo-mutiple-checkbox-label">نوع</InputLabel>
@@ -772,7 +551,7 @@ export default function FilterComponent(props) {
                     )}
                     MenuProps={MenuProps}
                   >
-                    {checkSlug().material.map((name, index) => (
+                    {checkSlug().map(({ material: name }, index) => (
                       <MenuItem key={index} value={name}>
                         <FormControlLabel
                           control={<Radio />}
@@ -797,7 +576,7 @@ export default function FilterComponent(props) {
                 </FormControl>
               </Grid>
             )}
-            {checkSlug().hasSize && (
+            {hasSize() && selectedSizes.length > 0 && (
               <Grid item xs={12} sm={4} md={3} className={classes.dFlex}>
                 <FormControl className={classes.formControl}>
                   <InputLabel id="size-mutiple-checkbox-label">سایز</InputLabel>
@@ -847,149 +626,16 @@ export default function FilterComponent(props) {
                     )}
                     MenuProps={MenuProps}
                   >
-                    {[...Array(18).keys()].map((name, index) => (
-                      <MenuItem key={index} value={name + 1}>
-                        <FormControlLabel
-                          control={<Radio />}
-                          checked={size.indexOf(name + 1) > -1}
-                        />
-                        <ListItemText primary={`سایز ${name + 1}`} />
-                      </MenuItem>
-                    ))}
-                    <div className={classes.buttonContainer}>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                        onClick={handleSubmit}
-                      >
-                        اعمال
-                      </Button>
-                    </div>
-                  </Select>
-                </FormControl>
-              </Grid>
-            )}
-            {checkSlug().hasStyle && (
-              <Grid item xs={12} sm={4} md={3} className={classes.dFlex}>
-                <FormControl className={classes.formControl}>
-                  <InputLabel id="style-mutiple-checkbox-label">طرح</InputLabel>
-                  <Select
-                    labelId="style-mutiple-checkbox-label"
-                    id="style-mutiple-checkbox"
-                    multiple
-                    value={styleFilter}
-                    onChange={handleStyleChange}
-                    renderValue={(selected) => (
-                      <div className={classes.chips}>
-                        {selected.map(
-                          (value, index) =>
-                            typeof value !== "undefined" && (
-                              <Chip
-                                key={index}
-                                label={value}
-                                className={classes.chip}
-                                clickable
-                                deleteIcon={
-                                  value !== defaultFilterText ? (
-                                    <CancelIcon
-                                      onMouseDown={(event) =>
-                                        event.stopPropagation()
-                                      }
-                                    />
-                                  ) : (
-                                    <CheckCircleIcon
-                                      onMouseDown={(event) => {
-                                        event.stopPropagation();
-                                        handleSubmit();
-                                      }}
-                                    />
-                                  )
-                                }
-                                onDelete={(e) =>
-                                  handleChipDelete(e, value, "style")
-                                }
-                              />
-                            )
-                        )}
-                      </div>
-                    )}
-                    MenuProps={MenuProps}
-                  >
-                    {checkSlug().style.map((name, index) => (
-                      <MenuItem key={index} value={name}>
-                        <Checkbox checked={styleFilter.indexOf(name) > -1} />
-                        <ListItemText primary={name} />
-                      </MenuItem>
-                    ))}
-                    <div className={classes.buttonContainer}>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                        onClick={handleSubmit}
-                      >
-                        اعمال
-                      </Button>
-                    </div>
-                  </Select>
-                </FormControl>
-              </Grid>
-            )}
-            {checkSlug().hasUsage && (
-              <Grid item xs={12} sm={4} md={3} className={classes.dFlex}>
-                <FormControl className={classes.formControl}>
-                  <InputLabel id="usage-mutiple-checkbox-label">
-                    کاربرد
-                  </InputLabel>
-                  <Select
-                    labelId="usage-mutiple-checkbox-label"
-                    id="usage-mutiple-checkbox"
-                    multiple
-                    value={usage}
-                    onChange={handleUsageChange}
-                    renderValue={(selected) => (
-                      <div className={classes.chips}>
-                        {selected.map(
-                          (value, index) =>
-                            typeof value !== "undefined" && (
-                              <Chip
-                                key={index}
-                                label={value}
-                                className={classes.chip}
-                                clickable
-                                deleteIcon={
-                                  value !== defaultFilterText ? (
-                                    <CancelIcon
-                                      onMouseDown={(event) =>
-                                        event.stopPropagation()
-                                      }
-                                    />
-                                  ) : (
-                                    <CheckCircleIcon
-                                      onMouseDown={(event) => {
-                                        event.stopPropagation();
-                                        handleSubmit();
-                                      }}
-                                    />
-                                  )
-                                }
-                                onDelete={(e) =>
-                                  handleChipDelete(e, value, "usage")
-                                }
-                              />
-                            )
-                        )}
-                      </div>
-                    )}
-                    MenuProps={MenuProps}
-                  >
-                    {checkSlug().usage.map((name, index) => (
-                      <MenuItem key={index} value={name}>
-                        <Checkbox checked={usage.indexOf(name) > -1} />
-                        <ListItemText primary={name} />
-                      </MenuItem>
-                    ))}
+                    {!selectedSizes.includes(defaultFilterText) &&
+                      selectedSizes.map((name, index) => (
+                        <MenuItem key={index} value={name}>
+                          <FormControlLabel
+                            control={<Radio />}
+                            checked={size.indexOf(name) > -1}
+                          />
+                          <ListItemText primary={`سایز ${name}`} />
+                        </MenuItem>
+                      ))}
                     <div className={classes.buttonContainer}>
                       <Button
                         variant="contained"
@@ -1010,3 +656,5 @@ export default function FilterComponent(props) {
     </React.Fragment>
   );
 }
+
+export default memo(FilterComponent);
