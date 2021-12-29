@@ -227,7 +227,13 @@ export default function Categories(props) {
           setImagePath(null);
         }
       } else if (category === 3) {
-        setImagePath(`metal-box/${size}.jpg`);
+        if (type === 10) {
+          setImagePath(`metal-box/${size}.jpg`);
+        } else if (type === 11) {
+          setImagePath(`kit-box/${size}.jpg`);
+        } else {
+          setImagePath(null);
+        }
       } else {
         setImagePath(null);
       }
@@ -474,7 +480,7 @@ export default function Categories(props) {
       </Head>
       <React.Fragment>
         <Container maxWidth="lg" className={classes.descriptionHolder}>
-          {imagePath !== null && (
+          {imagePath && (
             <Typography variant="h5" component="h1" className={classes.title}>
               {slug}
             </Typography>
@@ -486,7 +492,7 @@ export default function Categories(props) {
             alignItems="center"
             justifyContent="center"
           >
-            <Grid item xs={12} sm={checkSlug().description !== null ? 6 : 12}>
+            <Grid item xs={12} sm={checkSlug().description ? 6 : 12}>
               {imagePath !== null ? (
                 <Avatar
                   alt="guide"
@@ -503,7 +509,7 @@ export default function Categories(props) {
                 </Typography>
               )}
             </Grid>
-            {checkSlug().description !== null && (
+            {checkSlug().description && (
               <Grid item xs={12} md={6}>
                 <Typography
                   variant="body1"
