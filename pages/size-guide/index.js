@@ -242,6 +242,47 @@ export default function SizeGuide(props) {
                 </Grid>
               </AccordionDetails>
             </Accordion>
+            <Accordion
+              expanded={expanded === "kit-box"}
+              onChange={handleChange("kit-box")}
+              className={classes.accordion}
+            >
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="kit-box-content"
+                id="kit-box-header"
+              >
+                <Typography className={classes.heading}>
+                  راهنمای سایز کیت باکس
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails
+                classes={{
+                  root: classes.AccordionDetails,
+                }}
+              >
+                <Grid container spacing={1}>
+                  {[...Array(2).keys()].map((index) => (
+                    <Grow
+                      key={index}
+                      in={expanded === "kit-box"}
+                      style={{ transformOrigin: "0 0 0" }}
+                      {...(expanded === "kit-box"
+                        ? { timeout: 150 * index }
+                        : {})}
+                    >
+                      <Grid item xs={12} sm={6}>
+                        <Avatar
+                          variant="square"
+                          src={`/kit-box/${index + 1}.webp`}
+                          className={classes.square}
+                        />
+                      </Grid>
+                    </Grow>
+                  ))}
+                </Grid>
+              </AccordionDetails>
+            </Accordion>
           </div>
         </Container>
       </React.Fragment>
