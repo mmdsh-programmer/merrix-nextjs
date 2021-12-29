@@ -130,6 +130,20 @@ export default function Home() {
       image: "/fancy-bag.webp",
       description: "X BAG",
     },
+    {
+      href: "/categories/270",
+      slug: "TISSUE BOX-باکس دستمال کاغذی",
+      searchParams: [],
+      image: "/nex-box.webp",
+      description: "NEX BOX",
+    },
+    {
+      href: "/categories/211",
+      slug: "X BOX-باکس",
+      searchParams: [],
+      image: "/metal-pot.webp",
+      description: "Metal Pot",
+    },
   ];
 
   return (

@@ -171,7 +171,7 @@ export default function Categories(props) {
     },
     tissueBox: {
       description: null,
-      pieces: 5,
+      pieces: 4,
     },
   };
 
@@ -208,6 +208,7 @@ export default function Categories(props) {
   const getProductSizeGuide = (products) => {
     if (products.length > 0 && filter.sizes.length > 0) {
       const { sku } = products[0];
+      console.log("sku", sku);
       const category = Number(sku.substr(1, 2));
       const type = Number(sku.substr(3, 2));
       const size = Number(sku.substr(5, 2));
@@ -218,7 +219,7 @@ export default function Categories(props) {
           setImagePath(null);
         }
       } else if (category === 2) {
-        if (type === 10) {
+        if (type === 10 && getSkuRep(sku) !== 3) {
           setImagePath(`glossy-xbag/${size}.jpg`);
         } else if (type === 11) {
           setImagePath(`kraft-xbag/${size}.jpg`);
@@ -226,7 +227,13 @@ export default function Categories(props) {
           setImagePath(null);
         }
       } else if (category === 3) {
-        setImagePath(`metal-box/${size}.jpg`);
+        if (type === 10) {
+          setImagePath(`metal-box/${size}.jpg`);
+        } else if (type === 11) {
+          setImagePath(`kit-box/${size}.jpg`);
+        } else {
+          setImagePath(null);
+        }
       } else {
         setImagePath(null);
       }
@@ -473,7 +480,7 @@ export default function Categories(props) {
       </Head>
       <React.Fragment>
         <Container maxWidth="lg" className={classes.descriptionHolder}>
-          {imagePath !== null && (
+          {imagePath && (
             <Typography variant="h5" component="h1" className={classes.title}>
               {slug}
             </Typography>
@@ -485,7 +492,7 @@ export default function Categories(props) {
             alignItems="center"
             justifyContent="center"
           >
-            <Grid item xs={12} sm={checkSlug().description !== null ? 6 : 12}>
+            <Grid item xs={12} sm={checkSlug().description ? 6 : 12}>
               {imagePath !== null ? (
                 <Avatar
                   alt="guide"
@@ -502,7 +509,7 @@ export default function Categories(props) {
                 </Typography>
               )}
             </Grid>
-            {checkSlug().description !== null && (
+            {checkSlug().description && (
               <Grid item xs={12} md={6}>
                 <Typography
                   variant="body1"
