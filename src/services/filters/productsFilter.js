@@ -53,6 +53,14 @@ const productsFilters = [
         material: "گیفت باکس",
         sizes: [3, 4, 6, 10],
       },
+      {
+        material: "ریباکس",
+        sizes: [3, 4, 6, 10],
+      },
+      {
+        material: "وین باکس",
+        sizes: [17, 18],
+      },
     ],
   },
   {
