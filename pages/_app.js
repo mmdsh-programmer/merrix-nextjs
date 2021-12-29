@@ -22,23 +22,23 @@ export default function MyApp(props) {
     }
   }, []);
 
-  // React.useEffect(() => {
-  //   const start = () => {
-  //     setLoading(true);
-  //   };
-  //   const end = () => {
-  //     setLoading(false);
-  //   };
+  React.useEffect(() => {
+    const start = () => {
+      setLoading(true);
+    };
+    const end = () => {
+      setLoading(false);
+    };
 
-  //   router.events.on("routeChangeStart", start);
-  //   router.events.on("routeChangeComplete", end);
-  //   router.events.on("routeChangeError", end);
-  //   return () => {
-  //     router.events.off("routeChangeStart", start);
-  //     router.events.off("routeChangeComplete", end);
-  //     router.events.off("routeChangeError", end);
-  //   };
-  // }, []);
+    router.events.on("routeChangeStart", start);
+    router.events.on("routeChangeComplete", end);
+    router.events.on("routeChangeError", end);
+    return () => {
+      router.events.off("routeChangeStart", start);
+      router.events.off("routeChangeComplete", end);
+      router.events.off("routeChangeError", end);
+    };
+  }, []);
 
   return (
     <React.Fragment>
@@ -57,16 +57,13 @@ export default function MyApp(props) {
       <ThemeProvider theme={theme}>
         <RTL>
           <CssBaseline />
-          {/* {!loading ? (
+          {!loading ? (
             <Layout>
               <Component {...pageProps} />
             </Layout>
           ) : (
             <Loading loading={true} />
-          )} */}
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+          )}
         </RTL>
       </ThemeProvider>
     </React.Fragment>
