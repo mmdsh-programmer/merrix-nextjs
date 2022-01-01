@@ -288,24 +288,6 @@ export default function ProductCard(props) {
               >
                 <AddIcon fontSize="small" />
               </Button>
-              {/* <Button
-                  data-action="share/whatsapp/share"
-                  aria-label="share"
-                  size="small"
-                  variant="outlined"
-                  color="secondary"
-                  className={classes.button}
-                  onClick={() => {
-                    window.open(
-                      "https://wa.me/send?text=" +
-                        props.image[0].src +
-                        `\n sku : ${props.sku}`,
-                      "_blank"
-                    );
-                  }}
-                >
-                  <AddIcon fontSize="small" />
-                </Button> */}
             </ButtonGroup>
             {show && (
               <Typography

@@ -230,7 +230,7 @@ export default function Categories(props) {
         if (type === 10) {
           setImagePath(`metal-box/${size}.jpg`);
         } else if (type === 11) {
-          setImagePath(`kit-box/${size}.jpg`);
+          setImagePath(`kit-box/${size}.webp`);
         } else {
           setImagePath(null);
         }
