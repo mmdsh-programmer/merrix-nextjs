@@ -13,6 +13,7 @@ import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import Tooltip from "@material-ui/core/Tooltip";
 import Fade from "@material-ui/core/Fade";
+import Skeleton from "@material-ui/lab/Skeleton";
 import { Avatar } from "@material-ui/core";
 import { CartContext } from "src/helpers/CartContext";
 
@@ -110,15 +111,36 @@ const useStyles = makeStyles((theme) => ({
   avatarImage: {
     objectFit: "contain",
   },
+  mediaSkeleton: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgb(235,235,235)",
+    transition: "all 0.5s",
+  },
+  show: {
+    opacity: 1,
+  },
+  hide: {
+    opacity: 0,
+  },
+  noneDisplay: {
+    display: "none",
+  },
+  blockDisplay: {
+    display: "block",
+  },
 }));
 
 export default function ProductCard(props) {
   const classes = useStyles();
-  const ref = React.useRef(null);
   const [count, setCount] = React.useState(0);
   const { cartItems, increase, addProduct, decrease, removeProduct } =
     React.useContext(CartContext);
   const [show, setShow] = React.useState(false);
+  const [imageLoaded, setImageLoaded] = React.useState(false);
 
   const isInCart = (product) => {
     return !!cartItems.find((item) => item.id === product.id);
@@ -147,9 +169,18 @@ export default function ProductCard(props) {
     }
   };
 
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+  };
+
   return (
     <Card className={classes.root}>
       <CardActionArea className={classes.CardActionArea}>
+        <Skeleton
+          animation="wave"
+          variant="rect"
+          className={`${classes.mediaSkeleton} ${imageLoaded && classes.hide}`}
+        />
         <CardMedia
           component="img"
           alt={props.title}
@@ -163,8 +194,10 @@ export default function ProductCard(props) {
           classes={{
             img: classes.cardImage,
           }}
+          className={`${imageLoaded && classes.show}`}
+          onLoad={handleImageLoad}
         />
-        {props.image.length > 1 && (
+        {props.image.length > 1 && imageLoaded && (
           <Avatar
             alt="second image"
             src={props.image[1].src}

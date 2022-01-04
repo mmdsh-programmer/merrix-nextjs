@@ -465,7 +465,12 @@ export default function Categories(props) {
           )}
         </Grid>
         {checkFilter().length > 0 && offset < checkFilter().length ? (
-          <ViewportBlock onEnterViewport={handleOffset} />
+          <ViewportBlock
+            onEnterViewport={handleOffset}
+            onLeaveViewport={(e) => {
+              console.log("left");
+            }}
+          />
         ) : (
           <div className={classes.gutter}></div>
         )}
